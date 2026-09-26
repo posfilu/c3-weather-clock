@@ -55,12 +55,14 @@ static int write_chunk(FILE *f, const char type[4], const uint8_t *data, uint32_
     return fwrite(tail, 1, 4, f) == 4 ? 0 : -1;
 }
 
-int png_write_rgb565(const char *path, const uint16_t *pixels, int width, int height, int scale)
+int png_write_rgb565(const char *path, const uint16_t *pixels, int width, int height, int scale,
+                     int margin)
 {
     crc_init();
 
-    const uint32_t out_w = (uint32_t)(width * scale);
-    const uint32_t out_h = (uint32_t)(height * scale);
+    const uint32_t m = (uint32_t)margin;
+    const uint32_t out_w = (uint32_t)(width * scale) + 2 * m;
+    const uint32_t out_h = (uint32_t)(height * scale) + 2 * m;
     const size_t row_len = 1 + (size_t)out_w * 3; /* 每行前面一个 filter 字节（0 = None） */
     const size_t raw_len = row_len * out_h;
 
@@ -72,7 +74,11 @@ int png_write_rgb565(const char *path, const uint16_t *pixels, int width, int he
         uint8_t *row = raw + y * row_len;
         row[0] = 0;
         for (uint32_t x = 0; x < out_w; x++) {
-            uint16_t c = pixels[(y / scale) * width + (x / scale)];
+            if (x < m || y < m || x >= out_w - m || y >= out_h - m) {
+                memset(&row[1 + x * 3], 0x80, 3); /* 衬边：中灰 */
+                continue;
+            }
+            uint16_t c = pixels[((y - m) / scale) * width + ((x - m) / scale)];
             uint8_t r5 = (c >> 11) & 0x1F, g6 = (c >> 5) & 0x3F, b5 = c & 0x1F;
             row[1 + x * 3 + 0] = (uint8_t)((r5 << 3) | (r5 >> 2));
             row[1 + x * 3 + 1] = (uint8_t)((g6 << 2) | (g6 >> 4));

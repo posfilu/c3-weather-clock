@@ -27,6 +27,10 @@ if(SIM_SDL)
     target_link_libraries(lvgl PUBLIC ${SDL2_LIBRARIES})
 endif()
 
-add_executable(c3wc_sim main.c png_writer.c demo_screen.c)
+# UI 代码和固件共用：components/ 下只依赖 LVGL 的组件直接编进模拟器
+set(UI_DEMO_DIR ${CMAKE_CURRENT_LIST_DIR}/../components/ui_demo)
+
+add_executable(c3wc_sim main.c png_writer.c ${UI_DEMO_DIR}/demo_screen.c)
+target_include_directories(c3wc_sim PRIVATE ${UI_DEMO_DIR}/include)
 target_link_libraries(c3wc_sim PRIVATE lvgl m)
 target_compile_options(c3wc_sim PRIVATE -Wall -Wextra -Werror)

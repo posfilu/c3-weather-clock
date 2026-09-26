@@ -1,6 +1,6 @@
 /*
  * 模拟器用的 LVGL 配置。未列出的选项取 LVGL 默认值（见 lv_conf_internal.h）。
- * 影响显示效果的配置（颜色深度、字体）必须和固件保持一致。
+ * 影响显示效果的配置（颜色深度、字体）必须和固件的 sdkconfig.defaults 保持一致。
  */
 #ifndef LV_CONF_H
 #define LV_CONF_H
