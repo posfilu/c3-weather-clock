@@ -1,0 +1,16 @@
+# 项目默认配置。sdkconfig 本身不入库，由本文件生成；改默认值改这里。
+CONFIG_IDF_TARGET="esp32c3"
+
+# 合宙 ESP32C3-CORE：Flash 跑 DIO（GPIO12/13 给了 LED），容量按 4MB，M0 实测后再定
+CONFIG_ESPTOOLPY_FLASHMODE_DIO=y
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+
+# 分区表见 docs/adr/0004-partition-table.md
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+
+# 简约版没有 USB 转串口芯片，控制台走芯片内置的 USB-Serial-JTAG
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+
+# 崩溃时把现场写进 coredump 分区（M5 分析用）。v6 里 ELF 是唯一格式，不用再单独选
+CONFIG_ESP_COREDUMP_ENABLE_TO_FLASH=y

@@ -1,0 +1,17 @@
+# ESP-IDF
+build/
+sdkconfig
+sdkconfig.old
+managed_components/
+
+# PC 测试 / 模拟器
+build-host/
+build-sim/
+build-sim-sdl/
+
+# 编辑器
+.vscode/
+.idea/
+
+# Python
+__pycache__/

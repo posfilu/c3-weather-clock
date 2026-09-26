@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  firmware:
+    name: 固件编译 (ESP-IDF v6.0.3)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # git describe 生成版本号需要完整历史和 tag
+      - uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v6.0.3
+          target: esp32c3
+          # 容器里以 root 运行，仓库属主不同，git describe 会因 "dubious ownership" 失败
+          command: git config --global --add safe.directory '*' && idf.py build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: |
+            build/c3-weather-clock.bin
+            build/c3-weather-clock.elf
+            build/bootloader/bootloader.bin
+            build/partition_table/partition-table.bin
+            build/flasher_args.json
+
+  host-tests:
+    name: L1 单元测试
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tools/host-test.sh
+
+  sim:
+    name: 模拟器截图
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tools/sim.sh shot
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sim-shots
+          path: build-sim/shots/
