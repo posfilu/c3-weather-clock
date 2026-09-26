@@ -15,7 +15,6 @@
 - 固件和模拟器用同一个 LVGL 版本和同一套 `lv_conf` 关键配置（RGB565、字体），
   模拟器截图才能代表真机效果。
 
-## 待定（M1 决定）
+## 相关
 
-- 屏幕驱动组件的选型（esp_lcd + ST7735 驱动的具体来源）、是否使用 `esp_lvgl_port`。
-  M1 开始前补一份 ADR。
+- 屏幕驱动和 LVGL 移植层的选型见 [ADR-0006](0006-display-and-input-drivers.md)。
