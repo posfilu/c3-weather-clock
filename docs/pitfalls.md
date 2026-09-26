@@ -3,6 +3,14 @@
 > 由开发者维护。每个坑按下面的模板记一条，最新的写在最上面。
 > Claude 在基础设施上踩的坑也记在这里，标注 `[infra]`。
 
+## 2026-09-27 [infra] core.autocrlf 会把 shell 脚本变成 CRLF
+
+- **现象**：第一次提交时 git 对每个文件都警告 `LF will be replaced by CRLF`。
+- **根因**：本机全局开了 `core.autocrlf=true`。检出时 `.sh` 会被转成 CRLF，
+  在 WSL / Linux 里执行会报 `$'\r': command not found`。
+- **解决**：加 `.gitattributes`，写 `* text=auto eol=lf`，工作区统一用 LF，不依赖个人 git 配置。
+- **教训**：跨 Windows / Linux 的仓库，第一天就加 `.gitattributes`。
+
 ## 2026-09-27 [infra] USB-Serial-JTAG 控制台复位后丢开机日志
 
 - **现象**：冒烟脚本复位板子后，日志从 `alive, uptime 5 s` 开始，bootloader 日志和 `hello` 全部丢失。

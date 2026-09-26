@@ -1,0 +1,6 @@
+# 仓库和工作区统一使用 LF，不受个人 core.autocrlf 设置影响。
+# 否则 Windows 上检出的 .sh 会变成 CRLF，在 WSL / CI 里执行报 $'\r': command not found
+* text=auto eol=lf
+
+*.png binary
+*.bin binary
