@@ -3,6 +3,17 @@
 > 由开发者维护。每个坑按下面的模板记一条，最新的写在最上面。
 > Claude 在基础设施上踩的坑也记在这里，标注 `[infra]`。
 
+## 2026-09-27 [infra] esp-idf-ci-action 的 command 里不能有单引号
+
+- **现象**：第一次 CI，固件编译 job 失败，日志里是一整屏 `git config` 的用法说明，退出码 129。
+- **排查过程**：读了 action 的 `action.yml`，发现它这样执行：
+  `bash -c 'git config --global --add safe.directory "*" && ${{ inputs.command }}'`。
+- **根因**：我在 `command` 里写了 `safe.directory '*'`，其中的单引号把外层的单引号截断了，命令被拆坏；
+  何况 action 自己已经配置了 safe.directory，这一句本来就是多余的。
+- **解决**：去掉自定义 `command`，用默认的 `idf.py build`。
+- **教训**：用第三方 action 之前先读它的 `action.yml`，看输入参数是怎么拼进命令的。
+  另外"本地能过、CI 挂"时，先看 CI 环境和本地差在哪一层（这次是 shell 引号）。
+
 ## 2026-09-27 [infra] core.autocrlf 会把 shell 脚本变成 CRLF
 
 - **现象**：第一次提交时 git 对每个文件都警告 `LF will be replaced by CRLF`。

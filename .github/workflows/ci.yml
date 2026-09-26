@@ -10,16 +10,16 @@ jobs:
     name: 固件编译 (ESP-IDF v6.0.3)
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0 # git describe 生成版本号需要完整历史和 tag
       - uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: v6.0.3
           target: esp32c3
-          # 容器里以 root 运行，仓库属主不同，git describe 会因 "dubious ownership" 失败
-          command: git config --global --add safe.directory '*' && idf.py build
-      - uses: actions/upload-artifact@v4
+          # command 默认就是 idf.py build。注意：action 会把 command 包进一对单引号里，
+          # 并且已经自己配置了 git safe.directory，所以 command 里不能再出现单引号
+      - uses: actions/upload-artifact@v6
         with:
           name: firmware
           path: |
@@ -33,16 +33,16 @@ jobs:
     name: L1 单元测试
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: bash tools/host-test.sh
 
   sim:
     name: 模拟器截图
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: bash tools/sim.sh shot
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: sim-shots
           path: build-sim/shots/
