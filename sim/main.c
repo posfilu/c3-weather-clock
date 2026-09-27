@@ -98,11 +98,13 @@ int main(int argc, char **argv)
     demo_screen_create(lv_screen_active());
     lv_refr_now(disp);
 
-    if (png_write_rgb565(out, framebuffer, DISP_W, DISP_H, scale) != 0) {
+    const int margin = 2 * scale;
+    if (png_write_rgb565(out, framebuffer, DISP_W, DISP_H, scale, margin) != 0) {
         fprintf(stderr, "failed to write %s\n", out);
         return 1;
     }
-    printf("screenshot: %s (%dx%d, scale %d)\n", out, DISP_W * scale, DISP_H * scale, scale);
+    printf("screenshot: %s (%dx%d display, scale %d, %dpx grey margin)\n", out, DISP_W * scale,
+           DISP_H * scale, scale, margin);
     return 0;
 }
 

@@ -10,3 +10,4 @@
 | [0003](0003-lvgl-version.md) | LVGL 版本 | 已采纳 |
 | [0004](0004-partition-table.md) | 分区表 | 已采纳 |
 | [0005](0005-host-tests-and-simulator.md) | PC 单元测试与 LVGL 模拟器 | 已采纳 |
+| [0006](0006-display-and-input-drivers.md) | 屏幕、LVGL 移植层与按键驱动的选型 | 已采纳 |

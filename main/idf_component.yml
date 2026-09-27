@@ -1,0 +1,6 @@
+# 选型理由见 docs/adr/0006-display-and-input-drivers.md
+dependencies:
+  idf: ">=6.0.3"
+  lvgl/lvgl: "==9.5.0"
+  espressif/esp_lvgl_port: "~2.9.0"
+  espressif/button: "^4.2.1"

@@ -25,7 +25,7 @@ void demo_screen_create(lv_obj_t *scr)
     lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 6);
 
     lv_obj_t *ver = lv_label_create(scr);
-    lv_label_set_text_fmt(ver, "M0 sim  LVGL %d.%d.%d", LVGL_VERSION_MAJOR, LVGL_VERSION_MINOR,
+    lv_label_set_text_fmt(ver, "demo  LVGL %d.%d.%d", LVGL_VERSION_MAJOR, LVGL_VERSION_MINOR,
                           LVGL_VERSION_PATCH);
     lv_obj_align(ver, LV_ALIGN_TOP_MID, 0, 28);
 
